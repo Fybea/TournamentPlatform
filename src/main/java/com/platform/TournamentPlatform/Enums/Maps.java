@@ -1,6 +1,6 @@
 package com.platform.TournamentPlatform.Enums;
 
-public enum maps {
+public enum Maps {
     MIRAGE,
     OVERPASS,
     ANUBIS,

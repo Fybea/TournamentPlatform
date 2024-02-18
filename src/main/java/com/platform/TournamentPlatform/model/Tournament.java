@@ -1,14 +1,17 @@
 package com.platform.TournamentPlatform.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tournament")
-public class tournament {
+public class Tournament {
 
     @Id
     @Column(name = "id")
@@ -27,10 +30,13 @@ public class tournament {
     private int capacity;
 
     @Column(name = "start_date")
-    private LocalDateTime tournamentStartDate;
+    private LocalDate tournamentStartDate;
 
     @Column(name = "end_date")
-    private LocalDateTime tournamentEndDate;
+    private LocalDate tournamentEndDate;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "tournament")
+    private List<Team> teams;
 
     public int getId() {
         return id;
@@ -64,19 +70,27 @@ public class tournament {
         this.capacity = capacity;
     }
 
-    public LocalDateTime getTournamentStartDate() {
+    public LocalDate getTournamentStartDate() {
         return tournamentStartDate;
     }
 
-    public void setTournamentStartDate(LocalDateTime tournamentStartDate) {
+    public void setTournamentStartDate(LocalDate tournamentStartDate) {
         this.tournamentStartDate = tournamentStartDate;
     }
 
-    public LocalDateTime getTournamentEndDate() {
+    public LocalDate getTournamentEndDate() {
         return tournamentEndDate;
     }
 
-    public void setTournamentEndDate(LocalDateTime tournamentEndDate) {
+    public void setTournamentEndDate(LocalDate tournamentEndDate) {
         this.tournamentEndDate = tournamentEndDate;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 }

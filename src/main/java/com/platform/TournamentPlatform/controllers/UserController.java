@@ -39,8 +39,8 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<HttpStatus> creat(@RequestBody @Valid UserDTO userDTO,
-                                            BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserDTO userDTO,
+                                             BindingResult bindingResult) {
         userService.save(convertToUser(userDTO));
 
         return ResponseEntity.ok(HttpStatus.OK);
