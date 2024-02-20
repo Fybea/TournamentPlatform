@@ -29,6 +29,10 @@ public class TeamService {
         return team.orElse(null);
     }
 
+    public Optional<Team> findByName(String name) {
+        return teamRepository.findByName(name);
+    }
+
     @Transactional
     public void save(Team team) {
         teamRepository.save(team);

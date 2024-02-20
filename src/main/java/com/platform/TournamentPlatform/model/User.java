@@ -4,9 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Table(name = "Player")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
     @Id
     @Column(name = "id")
@@ -26,35 +32,7 @@ public class User {
     @Size(min = 10, max = 30, message = "Email should be between 10 and 30 characters")
     private String email;
 
-    public int getId() {
-        return id;
-    }
+    @ManyToOne
+    private Team team;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

@@ -3,9 +3,17 @@ package com.platform.TournamentPlatform.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Table(name = "team")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Team {
 
     @Id
@@ -27,36 +35,7 @@ public class Team {
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
 
+    @OneToMany
+    private List<User> members;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCaptainUsername() {
-        return captainUsername;
-    }
-
-    public void setCaptainUsername(String captainUsername) {
-        this.captainUsername = captainUsername;
-    }
-
-    public Tournament getTournament() {
-        return tournament;
-    }
-
-    public void setTournament(Tournament tournament) {
-        this.tournament = tournament;
-    }
 }

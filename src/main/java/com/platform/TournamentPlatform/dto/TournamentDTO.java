@@ -2,9 +2,13 @@ package com.platform.TournamentPlatform.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class TournamentDTO {
 
     @NotEmpty(message = "Name should not be empty")
@@ -21,43 +25,4 @@ public class TournamentDTO {
     //json input should be like this format: "2024-01-21" - "YYYY-MM-dd"
     private LocalDate tournamentEndDate;
 
-    public String getTournamentName() {
-        return tournamentName;
-    }
-
-    public void setTournamentName(String tournamentName) {
-        this.tournamentName = tournamentName;
-    }
-
-    public int getPrizePool() {
-        return prizePool;
-    }
-
-    public void setPrizePool(int prizePool) {
-        this.prizePool = prizePool;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public LocalDate getTournamentStartDate() {
-        return tournamentStartDate;
-    }
-
-    public void setTournamentStartDate(LocalDate tournamentStartDate) {
-        this.tournamentStartDate = tournamentStartDate;
-    }
-
-    public LocalDate getTournamentEndDate() {
-        return tournamentEndDate;
-    }
-
-    public void setTournamentEndDate(LocalDate tournamentEndDate) {
-        this.tournamentEndDate = tournamentEndDate;
-    }
 }

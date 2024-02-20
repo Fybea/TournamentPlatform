@@ -1,16 +1,20 @@
 package com.platform.TournamentPlatform.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "tournament")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Tournament {
 
     @Id
@@ -35,62 +39,7 @@ public class Tournament {
     @Column(name = "end_date")
     private LocalDate tournamentEndDate;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "tournament")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "tournament")
     private List<Team> teams;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTournamentName() {
-        return tournamentName;
-    }
-
-    public void setTournamentName(String tournamentName) {
-        this.tournamentName = tournamentName;
-    }
-
-    public int getPrizePool() {
-        return prizePool;
-    }
-
-    public void setPrizePool(int prizePool) {
-        this.prizePool = prizePool;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public LocalDate getTournamentStartDate() {
-        return tournamentStartDate;
-    }
-
-    public void setTournamentStartDate(LocalDate tournamentStartDate) {
-        this.tournamentStartDate = tournamentStartDate;
-    }
-
-    public LocalDate getTournamentEndDate() {
-        return tournamentEndDate;
-    }
-
-    public void setTournamentEndDate(LocalDate tournamentEndDate) {
-        this.tournamentEndDate = tournamentEndDate;
-    }
-
-    public List<Team> getTeams() {
-        return teams;
-    }
-
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
 }

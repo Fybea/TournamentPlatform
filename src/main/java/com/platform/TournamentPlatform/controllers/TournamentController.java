@@ -1,6 +1,7 @@
 package com.platform.TournamentPlatform.controllers;
 
 import com.platform.TournamentPlatform.dto.TournamentDTO;
+import com.platform.TournamentPlatform.exception.NotCreatedException;
 import com.platform.TournamentPlatform.model.Tournament;
 import com.platform.TournamentPlatform.services.TournamentService;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,6 +45,19 @@ public class TournamentController {
     @PostMapping("/create")
     private ResponseEntity<HttpStatus> create(@RequestBody @Valid TournamentDTO tournamentDTO
             , BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            StringBuilder errorMsg = new StringBuilder();
+
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError fieldError: errors) {
+                errorMsg.append(fieldError.getField())
+                        .append("-").append(fieldError.getDefaultMessage())
+                        .append(";");
+            }
+            throw new NotCreatedException(errorMsg.toString());
+        }
+
         tournamentService.save(convertToTournament(tournamentDTO));
 
         return ResponseEntity.ok(HttpStatus.OK);
