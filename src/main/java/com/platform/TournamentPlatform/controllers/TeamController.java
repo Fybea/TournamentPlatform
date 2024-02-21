@@ -1,6 +1,7 @@
 package com.platform.TournamentPlatform.controllers;
 
 import com.platform.TournamentPlatform.dto.TeamDTO;
+import com.platform.TournamentPlatform.dto.PlayerDTO;
 import com.platform.TournamentPlatform.exception.NotCreatedException;
 import com.platform.TournamentPlatform.util.TeamValidator;
 import com.platform.TournamentPlatform.model.Team;
@@ -23,7 +24,6 @@ public class TeamController {
 
     private final ModelMapper modelMapper;
     private final TeamService teamService;
-
     private final TeamValidator teamValidator;
 
     @Autowired
@@ -46,9 +46,9 @@ public class TeamController {
     }
 
 
-    @PostMapping("/create")
-    private ResponseEntity<HttpStatus> create(@RequestBody @Valid TeamDTO teamDTO
-                                              , BindingResult bindingResult) {
+    @PostMapping("/create/player/{playerId}")
+    private ResponseEntity<HttpStatus> create(@RequestBody @Valid TeamDTO teamDTO, @PathVariable("playerId") int playerId
+                                              ,BindingResult bindingResult) {
 
         teamValidator.validate(teamDTO, bindingResult);
 
@@ -64,29 +64,25 @@ public class TeamController {
             throw new NotCreatedException(errorMsg.toString());
         }
 
-        teamService.save(convertToTeam(teamDTO));
+        teamService.save(convertToTeam(teamDTO), playerId);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-//    @ExceptionHandler
-//    private ResponseEntity<ErrorResponse> handleException(NotCreatedException e) {
-//        ErrorResponse errorResponse = new ErrorResponse(
-//                e.getMessage(),
-//                System.currentTimeMillis()
-//        );
-//        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-//    }
-//
-//    @ExceptionHandler
-//    private ResponseEntity<ErrorResponse> handleException(NotFoundException e) {
-//        ErrorResponse errorResponse = new ErrorResponse(
-//                "Team with this id wasn't found",
-//                System.currentTimeMillis()
-//        );
-//        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-//    }
 
+    @PutMapping("/invite/{teamId}")
+    private ResponseEntity<HttpStatus> invite(@RequestBody PlayerDTO playerDTO,
+                                              @PathVariable("teamId") int teamId) {
+        teamService.joinToTeam(teamId, playerDTO.getUsername());
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/{username}")
+    private ResponseEntity<HttpStatus> removePlayerFromTeamByUsername(@PathVariable("username") String username) {
+        teamService.removePlayerFromTeamByUsername(username);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     private Team convertToTeam(TeamDTO teamDTO) {
         return modelMapper.map(teamDTO, Team.class);

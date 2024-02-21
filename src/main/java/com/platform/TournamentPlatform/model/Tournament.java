@@ -18,7 +18,7 @@ import java.util.List;
 public class Tournament {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "tournament_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 

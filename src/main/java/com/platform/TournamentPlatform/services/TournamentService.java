@@ -1,5 +1,6 @@
 package com.platform.TournamentPlatform.services;
 
+import com.platform.TournamentPlatform.exception.NotFoundException;
 import com.platform.TournamentPlatform.model.Tournament;
 import com.platform.TournamentPlatform.repositories.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,7 @@ public class TournamentService {
     }
 
     public Tournament findById(int id) {
-        Optional<Tournament> tournament = tournamentRepository.findById(id);
-        return tournament.orElse(null);
+        return tournamentRepository.findById(id).orElseThrow(() -> new NotFoundException("Tournament not found with id: " + id));
     }
 
     @Transactional

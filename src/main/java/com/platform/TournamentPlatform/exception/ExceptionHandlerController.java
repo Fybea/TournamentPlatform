@@ -35,4 +35,16 @@ public class ExceptionHandlerController {
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+
+    @ExceptionHandler
+    private ResponseEntity<Object> handleException(TeamException e) {
+        HttpStatus badRequest = HttpStatus.CONFLICT;
+
+        ExceptionDetails errorResponse = new ExceptionDetails(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
 }

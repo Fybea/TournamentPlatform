@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name = "team")
@@ -17,7 +18,7 @@ import java.util.List;
 public class Team {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "team_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -35,7 +36,9 @@ public class Team {
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
 
-    @OneToMany
-    private List<User> members;
+    @OneToMany(mappedBy = "team")
+    private List<Player> members;
 
+    @Column(name = "created_at")
+    private LocalDateTime localDateTime;
 }
