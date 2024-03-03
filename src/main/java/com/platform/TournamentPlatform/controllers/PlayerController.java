@@ -29,7 +29,7 @@ public class PlayerController {
     }
 
     @GetMapping()
-    public List<PlayerDTO> getSensors() {
+    public List<PlayerDTO> getPlayers() {
         return playerService.findAll().stream().map(this::convertToPlayerDTO)
                 .collect(Collectors.toList());
     }
@@ -40,12 +40,7 @@ public class PlayerController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<HttpStatus> createPlayer(@RequestBody @Valid PlayerDTO playerDTO,
-                                                   BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            throw new NotCreatedException("Bad request");
-        }
+    public ResponseEntity<HttpStatus> createPlayer(@RequestBody @Valid PlayerDTO playerDTO) {
 
         this.playerService.save(convertToPlayer(playerDTO));
         return ResponseEntity.ok(HttpStatus.CREATED);

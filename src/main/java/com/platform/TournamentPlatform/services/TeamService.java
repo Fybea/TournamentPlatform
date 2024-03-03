@@ -41,7 +41,8 @@ public class TeamService {
 
     @Transactional
     public void save(Team team, int userId) {
-        Player owner = playerRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with this id: " + userId + ", not found"));
+        Player owner = playerRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User with this id: " + userId + ", not found"));
         if (owner.getTeam() != null) {
             throw new TeamException("User with this id: " + userId + ", already has a team");
         }
@@ -53,18 +54,25 @@ public class TeamService {
 
     @Transactional
     public void joinToTeam(int teamId, String username) {
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new NotFoundException("Team with this id: " + teamId + ", not found"));
-        Player player = playerRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User with this name: " + username + ", not found"));
+        Team team = teamRepository.findById(teamId).orElseThrow(() ->
+                new NotFoundException("Team with this id: " + teamId + ", not found"));
+
+        Player player = playerRepository.findByUsername(username).orElseThrow(() ->
+                new NotFoundException("User with this name: " + username + ", not found"));
+
+        if(player.getTeam() != null) {
+            throw new TeamException("User with this name: " + username + ", already has a team");
+        }
+
         player.setTeam(team);
         playerRepository.save(player);
     }
 
     @Transactional
-    public void removePlayerFromTeamByUsername(String username) {
-        Player player = playerRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User with this name: " + username + ", not found"));
+    public void removePlayer(int playerId) {
+        Player player = playerRepository.findById(playerId).orElseThrow(() ->
+                new NotFoundException("User with this id: " + playerId + ", not found"));
         player.setTeam(null);
         playerRepository.save(player);
     }
-
-
 }

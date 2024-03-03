@@ -2,6 +2,7 @@ package com.platform.TournamentPlatform.services;
 
 import com.platform.TournamentPlatform.exception.NotFoundException;
 import com.platform.TournamentPlatform.model.Tournament;
+import com.platform.TournamentPlatform.model.TournamentStatus;
 import com.platform.TournamentPlatform.repositories.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class TournamentService {
 
     @Transactional
     public void save(Tournament tournament) {
+        tournament.setStatus(TournamentStatus.UPCOMING);
         tournamentRepository.save(tournament);
     }
 }

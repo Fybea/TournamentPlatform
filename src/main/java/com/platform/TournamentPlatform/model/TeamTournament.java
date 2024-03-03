@@ -1,27 +1,25 @@
 package com.platform.TournamentPlatform.model;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "roaster")
+@Table(name = "team_tournament")
 @Getter
 @Setter
-public class Roaster {
+public class TeamTournament {
 
     @Id
-    @Column(name = "membership_id")
+    @Column(name = "team_tournament_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
     @JoinColumn(name = "team_id")
-    private Team teamId;
+    private Team team;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Player member;
+    @JoinColumn(name = "tournament_id")
+    private Tournament tournament;
 }
-

@@ -32,13 +32,6 @@ public class Team {
     @Size(min = 3, max = 30, message = "Name should be between 3 and 30 characters")
     private String captainUsername;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tournament_id")
-    private Tournament tournament;
-
-    @OneToMany(mappedBy = "team")
-    private List<Player> members;
-
     @Column(name = "created_at")
     private LocalDateTime localDateTime;
 }

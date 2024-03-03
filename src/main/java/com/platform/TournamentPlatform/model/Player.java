@@ -26,9 +26,6 @@ public class Player {
     @Size(min = 3, max = 50, message = "Name should be between 3 and 50 characters")
     private String username;
 
-    @Column(name = "password")
-    private String password;
-
     @Email(message = "Email address is not valid")
     @NotEmpty(message = "Email should not be empty")
     @Size(min = 10, max = 30, message = "Email should be between 10 and 30 characters")
@@ -40,5 +37,4 @@ public class Player {
 
     @Column(name = "created_at")
     private LocalDateTime localDateTime;
-
 }

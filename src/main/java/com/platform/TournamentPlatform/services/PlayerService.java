@@ -1,5 +1,6 @@
 package com.platform.TournamentPlatform.services;
 
+import com.platform.TournamentPlatform.exception.NotCreatedException;
 import com.platform.TournamentPlatform.exception.NotFoundException;
 import com.platform.TournamentPlatform.model.Player;
 import com.platform.TournamentPlatform.repositories.PlayerRepository;
@@ -29,9 +30,17 @@ public class PlayerService {
         return playerRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
     }
 
+
     @Transactional
     public void save(Player player) {
-        player.setLocalDateTime(LocalDateTime.now());
+        if (playerRepository.findByUsername(player.getUsername()).isPresent()) {
+            throw new NotCreatedException("User with this name: " + player.getUsername() + " already exists.");
+        }
+
+        if (playerRepository.findByEmail(player.getEmail()).isPresent()) {
+            throw new NotCreatedException("User with this email: " + player.getEmail() + " already exists.");
+        }
+            player.setLocalDateTime(LocalDateTime.now());
         playerRepository.save(player);
     }
 }

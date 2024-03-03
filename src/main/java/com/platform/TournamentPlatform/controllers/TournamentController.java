@@ -1,16 +1,16 @@
 package com.platform.TournamentPlatform.controllers;
 
+import com.platform.TournamentPlatform.dto.TeamDTO;
 import com.platform.TournamentPlatform.dto.TournamentDTO;
-import com.platform.TournamentPlatform.exception.NotCreatedException;
+import com.platform.TournamentPlatform.model.Team;
 import com.platform.TournamentPlatform.model.Tournament;
+import com.platform.TournamentPlatform.services.TeamTournamentService;
 import com.platform.TournamentPlatform.services.TournamentService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,49 +23,60 @@ public class TournamentController {
     private final ModelMapper modelMapper;
     private final TournamentService tournamentService;
 
+    private final TeamTournamentService teamTournamentService;
+
     @Autowired
-    public TournamentController(ModelMapper modelMapper, TournamentService tournamentService) {
+    public TournamentController(ModelMapper modelMapper,
+                                TournamentService tournamentService,
+                                TeamTournamentService teamTournamentService) {
+
         this.modelMapper = modelMapper;
         this.tournamentService = tournamentService;
+        this.teamTournamentService = teamTournamentService;
     }
 
-
     @GetMapping
-    public List<TournamentDTO> getTeams() {
+    public List<TournamentDTO> getTournaments() {
         return tournamentService.findAll().stream().map(this::convertToTournamentDTO)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public TournamentDTO getTeam(@PathVariable int id) {
+    public TournamentDTO getTournament(@PathVariable int id) {
         return convertToTournamentDTO(tournamentService.findById(id));
     }
 
 
     @PostMapping("/create")
-    private ResponseEntity<HttpStatus> create(@RequestBody @Valid TournamentDTO tournamentDTO
-            , BindingResult bindingResult) {
-
-        if(bindingResult.hasErrors()) {
-            StringBuilder errorMsg = new StringBuilder();
-
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError fieldError: errors) {
-                errorMsg.append(fieldError.getField())
-                        .append("-").append(fieldError.getDefaultMessage())
-                        .append(";");
-            }
-            throw new NotCreatedException(errorMsg.toString());
-        }
-
+    private ResponseEntity<HttpStatus> create(@RequestBody @Valid TournamentDTO tournamentDTO) {
         tournamentService.save(convertToTournament(tournamentDTO));
-
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PostMapping("/registration/{tournamentId}")
+    public ResponseEntity<HttpStatus> enterToTournament(@PathVariable("tournamentId") int tournamentId,
+                                                        @RequestBody Team team) {
+        teamTournamentService.save(tournamentId, team.getId());
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping("/{tournamentId}/teams")
+    public List<TeamDTO> getAllRegisteredTeams(@PathVariable("tournamentId") int tournamentId) {
+        return teamTournamentService.findAllByTournamentId(tournamentId).stream().map(this::convertToTeamDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{tournamentId}/participants")
+    public int getParticipantsNumber(@PathVariable("tournamentId") int tournamentId) {
+        return teamTournamentService.getParticipantsNumber(tournamentId);
+    }
 
     private Tournament convertToTournament(TournamentDTO tournamentDTO) {
         return modelMapper.map(tournamentDTO, Tournament.class);
+    }
+
+    private TeamDTO convertToTeamDTO(Team team) {
+        return modelMapper.map(team, TeamDTO.class);
     }
 
     private TournamentDTO convertToTournamentDTO(Tournament tournament) {

@@ -33,13 +33,15 @@ public class Tournament {
     @Column(name = "capacity")
     private int capacity;
 
+    @Enumerated(EnumType.ORDINAL)
+    private TournamentStatus status;
+
+    @Column(name = "participants")
+    private int participants;
+
     @Column(name = "start_date")
     private LocalDate tournamentStartDate;
 
     @Column(name = "end_date")
     private LocalDate tournamentEndDate;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "tournament")
-    private List<Team> teams;
-
 }
