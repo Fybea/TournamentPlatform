@@ -7,11 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TeamTournamentRepository extends JpaRepository<TeamTournament, Integer> {
 
     @Query("SELECT tt.team FROM TeamTournament tt WHERE tt.tournament.id = :tournamentId")
     List<Team> findTeamsByTournamentId(int tournamentId);
+
+    @Query("SELECT tt.team From TeamTournament  tt WHERE  tt.tournament.id = :tournamentId")
+    Optional<Team> findTeamByTournamentId(int tournamentId);
 }
 

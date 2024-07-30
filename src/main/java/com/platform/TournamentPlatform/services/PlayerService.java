@@ -5,10 +5,10 @@ import com.platform.TournamentPlatform.exception.NotFoundException;
 import com.platform.TournamentPlatform.model.Player;
 import com.platform.TournamentPlatform.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,10 +16,12 @@ import java.util.List;
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PlayerService(PlayerRepository playerRepository) {
+    public PlayerService(PlayerRepository playerRepository, PasswordEncoder passwordEncoder) {
         this.playerRepository = playerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Player> findAll() {
@@ -40,7 +42,7 @@ public class PlayerService {
         if (playerRepository.findByEmail(player.getEmail()).isPresent()) {
             throw new NotCreatedException("User with this email: " + player.getEmail() + " already exists.");
         }
-            player.setLocalDateTime(LocalDateTime.now());
+        player.setPassword(passwordEncoder.encode(player.getPassword()));
         playerRepository.save(player);
     }
 }

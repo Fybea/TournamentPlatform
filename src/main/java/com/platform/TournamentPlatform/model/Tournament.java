@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,15 +34,18 @@ public class Tournament {
     @Column(name = "capacity")
     private int capacity;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private TournamentStatus status;
 
     @Column(name = "participants")
     private int participants;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     @Column(name = "start_date")
-    private LocalDate tournamentStartDate;
+    private LocalDateTime tournamentStartDate;
 
     @Column(name = "end_date")
-    private LocalDate tournamentEndDate;
+    private LocalDateTime tournamentEndDate;
 }

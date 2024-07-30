@@ -1,7 +1,6 @@
 package com.platform.TournamentPlatform.controllers;
 
 import com.platform.TournamentPlatform.dto.PlayerDTO;
-import com.platform.TournamentPlatform.exception.NotCreatedException;
 import com.platform.TournamentPlatform.model.Player;
 import com.platform.TournamentPlatform.services.PlayerService;
 import jakarta.validation.Valid;
@@ -9,14 +8,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/player")
+@RequestMapping("/api/v1/player")
 public class PlayerController {
 
     private final PlayerService playerService;
@@ -40,7 +38,7 @@ public class PlayerController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<HttpStatus> createPlayer(@RequestBody @Valid PlayerDTO playerDTO) {
+    public ResponseEntity<HttpStatus> playerRegistration(@RequestBody @Valid PlayerDTO playerDTO) {
 
         this.playerService.save(convertToPlayer(playerDTO));
         return ResponseEntity.ok(HttpStatus.CREATED);

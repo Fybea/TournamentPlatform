@@ -37,4 +37,10 @@ public class Player {
 
     @Column(name = "created_at")
     private LocalDateTime localDateTime;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "role")
+    private String role;
 }

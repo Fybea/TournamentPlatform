@@ -4,20 +4,18 @@ import com.platform.TournamentPlatform.dto.PlayerDTO;
 import com.platform.TournamentPlatform.dto.TeamDTO;
 import com.platform.TournamentPlatform.model.Team;
 import com.platform.TournamentPlatform.services.TeamService;
-import com.platform.TournamentPlatform.util.TeamValidator;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/team")
+@RequestMapping("/api/v1/team")
 public class TeamController {
 
     private final ModelMapper modelMapper;

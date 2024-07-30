@@ -17,12 +17,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/tournament")
+@RequestMapping("/api/v1/tournament")
 public class TournamentController {
-
     private final ModelMapper modelMapper;
     private final TournamentService tournamentService;
-
     private final TeamTournamentService teamTournamentService;
 
     @Autowired
@@ -45,7 +43,6 @@ public class TournamentController {
     public TournamentDTO getTournament(@PathVariable int id) {
         return convertToTournamentDTO(tournamentService.findById(id));
     }
-
 
     @PostMapping("/create")
     private ResponseEntity<HttpStatus> create(@RequestBody @Valid TournamentDTO tournamentDTO) {
@@ -70,6 +67,15 @@ public class TournamentController {
     public int getParticipantsNumber(@PathVariable("tournamentId") int tournamentId) {
         return teamTournamentService.getParticipantsNumber(tournamentId);
     }
+
+    @PatchMapping("/{tournamentId}")
+    private ResponseEntity<HttpStatus> cancelTournament (@PathVariable("tournamentId") int tournamentId) {
+        tournamentService.cancelTournament(tournamentId);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+
+
 
     private Tournament convertToTournament(TournamentDTO tournamentDTO) {
         return modelMapper.map(tournamentDTO, Tournament.class);

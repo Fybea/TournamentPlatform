@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,10 +22,10 @@ public class TournamentDTO {
 
     private int capacity;
 
-    //json input should be like this format: "2024-01-21" - "YYYY-MM-dd"
-    private LocalDate tournamentStartDate;
+    //json input should be like this format: "2024-01-21" - "YYYY-MM-dd
+    private LocalDateTime tournamentStartDate;
 
     //json input should be like this format: "2024-01-21" - "YYYY-MM-dd"
-    private LocalDate tournamentEndDate;
+    private LocalDateTime tournamentEndDate;
 
 }

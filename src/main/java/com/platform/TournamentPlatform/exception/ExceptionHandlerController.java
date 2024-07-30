@@ -1,5 +1,6 @@
 package com.platform.TournamentPlatform.exception;
 
+import org.aspectj.weaver.patterns.HasMemberTypePatternForPerThisMatching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,6 +39,19 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler
     private ResponseEntity<Object> handleException(TeamException e) {
+        HttpStatus badRequest = HttpStatus.CONFLICT;
+
+        ExceptionDetails errorResponse = new ExceptionDetails(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
+
+    @ExceptionHandler
+    private ResponseEntity<Object> handleException(TournamentException e) {
         HttpStatus badRequest = HttpStatus.CONFLICT;
 
         ExceptionDetails errorResponse = new ExceptionDetails(
